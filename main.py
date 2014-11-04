@@ -4,6 +4,7 @@ from collections import defaultdict
 from distutils.spawn import find_executable
 from subprocess import call
 import os
+import signal
 import sys
 import time
 
@@ -16,6 +17,8 @@ POLL_TIMEOUT = 5
 HAPROXY_CONFIG = '/etc/haproxy.cfg'
 HAPROXY_PID = '/var/run/haproxy.pid'
 
+
+signal.signal(signal.SIGCHLD, signal.SIG_IGN)
 
 def get_etcd_addr():
     """
