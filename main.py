@@ -101,6 +101,9 @@ def get_services(client):
         if data['port'] is None:
             services.pop(svc)
 
+    for service in services:
+        services[service]["backends"].sort()
+
     return services
 
 
@@ -163,8 +166,10 @@ def main():
             client = etcd.Client(host=host, port=port)
 
         services = get_services(client)
+
         if services != current_services:
             print("config changed. reload haproxy")
+
             generate_config(services)
 
             if restart_haproxy():
